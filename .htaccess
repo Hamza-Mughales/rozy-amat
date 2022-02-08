@@ -1,0 +1,32 @@
+
+RewriteOptions inherit
+
+RewriteEngine on
+
+<IfModule mod_rewrite.c>
+
+    Options +FollowSymLinks
+    RewriteEngine on
+
+    RewriteRule ^([a-z0-9_-]+)\.html$ index.php/page/$1 [L]
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond $1 !^(index\.php|asset|robots\.txt)
+    RewriteRule ^(.*)$ index.php?/$1 [QSA,L]
+
+</IfModule>
+    RewriteRule ^([a-z0-9_-]+)\.html$ index.php/page/$1 [L]
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond $1 !^(index\.php|asset|robots\.txt)
+    RewriteRule ^(.*)$ index.php?/$1 [QSA,L]
+    
+<FilesMatch ".(otf|ttf|eot|woff|woff2)$">
+    SetEnvIf Origin "^http(s)?://(.+.)?(localhost|www.rozy-amat.4dev.biz)$" origin_is=$0
+    Header set Access-Control-Allow-Origin %{origin_is}e env=origin_is
+</FilesMatch>
+RewriteCond %{HTTPS} off
+RewriteCond %{HTTP:X-Forwarded-SSL} !on
+RewriteCond %{HTTP_HOST} ^rozy\-amat\.4dev\.biz$ [OR]
+RewriteCond %{HTTP_HOST} ^www\.rozy\-amat\.4dev\.biz$
+RewriteRule ^/?$ "https\:\/\/rozy\-amat\.4dev\.biz\/" [R=301,L]
